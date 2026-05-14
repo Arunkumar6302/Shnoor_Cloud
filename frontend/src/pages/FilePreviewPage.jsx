@@ -102,19 +102,23 @@ export default function FilePreviewPage() {
       </nav>
 
       {/* Preview Area */}
-      <main className="flex-1 p-4 md:p-8 flex items-center justify-center overflow-hidden">
-        <div className="w-full max-w-6xl h-full bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col">
-          <div className="flex-1 bg-slate-50 dark:bg-slate-950 p-4 md:p-8 overflow-hidden relative">
+      <main className="flex-1 p-4 md:p-6 flex flex-col overflow-hidden">
+        <div className="w-full max-w-6xl mx-auto flex-1 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-slate-50 dark:bg-slate-950 p-2 md:p-4 overflow-hidden relative flex flex-col">
             {file.type.includes('image') ? (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="flex-1 flex items-center justify-center">
                 <img src={`${serverUrl}${file.url}`} alt={file.name} className="max-w-full max-h-full object-contain rounded-lg shadow-md" />
               </div>
             ) : file.type.includes('pdf') ? (
-              <iframe src={`${serverUrl}${file.url}`} className="w-full h-full rounded-xl border-0 bg-white shadow-sm" title={file.name} />
+              <iframe src={`${serverUrl}${file.url}`} className="flex-1 w-full rounded-xl border-0 bg-white shadow-sm min-h-[500px] md:min-h-0" title={file.name} />
             ) : file.name.endsWith('.docx') ? (
-              <DocxViewer url={`${serverUrl}${file.url}`} />
+              <div className="flex-1 overflow-hidden">
+                <DocxViewer url={`${serverUrl}${file.url}`} />
+              </div>
             ) : file.name.endsWith('.pptx') || file.name.endsWith('.ppt') ? (
-              <PptxViewer url={file.url} name={file.name} />
+              <div className="flex-1">
+                <PptxViewer url={file.url} name={file.name} />
+              </div>
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
                 <FileText size={80} className="mb-6 opacity-20" />

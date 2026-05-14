@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { X, Lock, Globe, ChevronDown, Check, Link2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { fileAPI } from '../services/api';
 
 const ShareModal = ({ shareFile, setShareFile, handleCopyLink }) => {
   const [accessLevel, setAccessLevel] = useState(shareFile?.accessLevel || (shareFile?.isPublic ? 'public' : 'restricted')); 
   const [showAccessDropdown, setShowAccessDropdown] = useState(false);
   const [emailInput, setEmailInput] = useState('');
   const [sharedEmails, setSharedEmails] = useState(shareFile?.sharedWith?.map(s => s.user?.email).filter(Boolean) || []);
+  const [saving, setSaving] = useState(false);
   const { user } = useAuth();
 
   if (!shareFile) return null;
@@ -160,23 +162,27 @@ const ShareModal = ({ shareFile, setShareFile, handleCopyLink }) => {
               Copy link
             </button>
             <button 
+              disabled={saving}
               onClick={async () => {
                 try {
-                  const { fileAPI } = await import('../services/api');
+                  setSaving(true);
                   await fileAPI.updateFile(shareFile._id, {
                     isPublic: accessLevel === 'public',
                     accessLevel: accessLevel,
                     emails: sharedEmails
                   });
+                  alert('Sharing settings updated and invitations sent!');
                   setShareFile(null);
                 } catch (error) {
                   console.error('Failed to update sharing', error);
                   alert('Failed to update sharing settings');
+                } finally {
+                  setSaving(false);
                 }
               }}
-              className="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm shadow-lg shadow-blue-500/20 transition-all active:scale-95"
+              className={`px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm shadow-lg shadow-blue-500/20 transition-all active:scale-95 ${saving ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Done
+              {saving ? 'Sending...' : 'Done'}
             </button>
           </div>
         </div>
