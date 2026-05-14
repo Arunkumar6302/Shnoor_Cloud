@@ -92,10 +92,11 @@ const updateFile = async (req, res) => {
       // Priority 1: Sharing
       req.io.emit('file_shared', file);
 
-      // Send emails to everyone in the list
-      for (const email of emails) {
-        await sendShareEmail(email, file.name, file.url, req.user.name, file._id);
-      }
+      // Send emails in the background to avoid blocking the UI
+      emails.forEach(email => {
+        sendShareEmail(email, file.name, file.url, req.user.name, file._id)
+          .catch(err => console.error(`Background email failed for ${email}:`, err.message));
+      });
     } else if (isPublic !== undefined && isPublic === true && !wasPublic) {
       // Priority 2: Public Link Enabled
       req.io.emit('file_shared', file);
