@@ -89,30 +89,31 @@ const updateFile = async (req, res) => {
         user: u._id,
         permission: 'view'
       }));
+      // Priority 1: Sharing
       req.io.emit('file_shared', file);
 
       // Send emails to everyone in the list
       for (const email of emails) {
         await sendShareEmail(email, file.name, file.url, req.user.name);
       }
-    }
-
-    await file.save();
-    
-    if (isPublic === true && !wasPublic) {
+    } else if (isPublic === true && !wasPublic) {
+      // Priority 2: Public Link Enabled
       req.io.emit('file_shared', file);
-    }
-
-    if (isTrashed === true && !wasTrashed) {
+    } else if (isTrashed === true && !wasTrashed) {
+      // Priority 3: Trashed
       req.io.emit('file_trashed', file);
     } else if (isStarred !== wasStarred) {
+      // Priority 4: Starred
       req.io.emit('file_starred', file);
     } else if (name !== oldName) {
+      // Priority 5: Renamed
       req.io.emit('file_renamed', file);
     } else {
+      // Default: General update
       req.io.emit('file_updated', file);
     }
 
+    await file.save();
     return res.json(file);
   } catch (err) {
     res.status(500).json({ message: 'Error updating file' });

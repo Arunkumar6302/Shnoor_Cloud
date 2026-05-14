@@ -81,7 +81,16 @@ export default function NotificationManager() {
       }
     });
 
-    return () => socket.disconnect();
+    return () => {
+      socket.off('file_uploaded');
+      socket.off('file_updated');
+      socket.off('file_deleted');
+      socket.off('file_shared');
+      socket.off('file_starred');
+      socket.off('file_trashed');
+      socket.off('file_renamed');
+      socket.disconnect();
+    };
   }, [user]);
 
   return null;
