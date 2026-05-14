@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Auth from './pages/Auth';
 import Settings from './pages/Settings';
+import FilePreviewPage from './pages/FilePreviewPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import NotificationManager from './components/NotificationManager';
 
@@ -34,6 +35,12 @@ function AppRoutes() {
         <Route path="trash" element={<Dashboard />} />
         <Route path="settings" element={<Settings />} />
       </Route>
+
+      <Route path="/preview/:id" element={
+        <PrivateRoute>
+          <FilePreviewPage />
+        </PrivateRoute>
+      } />
 
       {/* Catch-all: Redirect to root */}
       <Route path="*" element={<Navigate to="/" />} />

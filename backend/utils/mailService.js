@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendShareEmail = async (toEmail, fileName, fileUrl, ownerName) => {
+const sendShareEmail = async (toEmail, fileName, fileUrl, ownerName, fileId) => {
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -24,7 +24,7 @@ const sendShareEmail = async (toEmail, fileName, fileUrl, ownerName) => {
           <div style="margin: 20px 0; padding: 15px; background-color: #f9fafb; border-radius: 8px;">
             <p style="margin: 0; font-weight: bold;">${fileName}</p>
           </div>
-          <a href="${process.env.CLIENT_URL}/dashboard/shared" style="display: inline-block; padding: 10px 20px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">View File</a>
+          <a href="${(process.env.CLIENT_URL || 'https://shnoor-cloud.onrender.com').replace(/\/$/, '')}/preview/${fileId}" style="display: inline-block; padding: 10px 20px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">View File</a>
           <p style="margin-top: 20px; font-size: 12px; color: #6b7280;">If you don't have an account, please sign up to view the file.</p>
         </div>
       `,

@@ -94,7 +94,7 @@ const updateFile = async (req, res) => {
 
       // Send emails to everyone in the list
       for (const email of emails) {
-        await sendShareEmail(email, file.name, file.url, req.user.name);
+        await sendShareEmail(email, file.name, file.url, req.user.name, file._id);
       }
     } else if (isPublic !== undefined && isPublic === true && !wasPublic) {
       // Priority 2: Public Link Enabled

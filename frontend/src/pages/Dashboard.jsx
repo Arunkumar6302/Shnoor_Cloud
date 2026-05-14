@@ -121,10 +121,10 @@ export default function Dashboard() {
   };
 
   const handleCopyLink = (file) => {
-    const serverUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5001';
-    const fullUrl = `${serverUrl}${file.url}`;
+    const clientUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5173';
+    const fullUrl = `${clientUrl}/preview/${file._id}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
-      alert("Link copied to clipboard!");
+      alert("Preview link copied to clipboard!");
     }).catch(err => {
       console.error('Failed to copy: ', err);
     });
