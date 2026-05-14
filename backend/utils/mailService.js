@@ -11,11 +11,14 @@ const sendShareEmail = async (toEmail, fileName, fileUrl, ownerName, fileId) => 
         pass: process.env.SMTP_PASS,
       },
       tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2'
       },
-      connectionTimeout: 10000, // 10 seconds timeout
-      greetingTimeout: 10000,
-      socketTimeout: 10000
+      requireTLS: true,
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      debug: true, // Enable debug logs to see the handshake
+      logger: true
     });
 
     const mailOptions = {
