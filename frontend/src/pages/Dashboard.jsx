@@ -121,7 +121,8 @@ export default function Dashboard() {
   };
 
   const handleCopyLink = (file) => {
-    const fullUrl = `http://localhost:5001${file.url}`;
+    const serverUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5001';
+    const fullUrl = `${serverUrl}${file.url}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
       alert("Link copied to clipboard!");
     }).catch(err => {
@@ -130,9 +131,10 @@ export default function Dashboard() {
   };
 
   const handleDownload = (e, fileUrl, fileName) => {
+    const serverUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5001';
     e.preventDefault();
     const link = document.createElement('a');
-    link.href = `http://localhost:5001${fileUrl}`;
+    link.href = `${serverUrl}${fileUrl}`;
     link.download = fileName;
     document.body.appendChild(link);
     link.click();

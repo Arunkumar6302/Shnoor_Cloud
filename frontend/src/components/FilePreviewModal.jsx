@@ -31,23 +31,37 @@ const FilePreviewModal = ({ previewFile, setPreviewFile, handleDownload }) => {
 
         {/* Viewer Area */}
         <div className="flex-1 bg-slate-100 dark:bg-slate-950 p-4 relative overflow-hidden">
-          {previewFile.type.includes('image') ? (
-            <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-900 rounded-lg">
-              <img src={`http://localhost:5001${previewFile.url}`} alt={previewFile.name} className="max-w-full max-h-full object-contain rounded-md shadow-sm" />
-            </div>
-          ) : previewFile.type.includes('pdf') ? (
-            <iframe src={`http://localhost:5001${previewFile.url}`} className="w-full h-full rounded-lg border-0 bg-white dark:bg-slate-900 shadow-sm" title={previewFile.name} />
-          ) : previewFile.name.endsWith('.docx') ? (
-            <DocxViewer url={`http://localhost:5001${previewFile.url}`} />
-          ) : previewFile.name.endsWith('.pptx') || previewFile.name.endsWith('.ppt') ? (
-            <PptxViewer url={previewFile.url} name={previewFile.name} />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-              <FileText size={64} className="mb-4 opacity-50" />
-              <p className="text-lg font-medium">Preview not available for this file type</p>
-              <p className="text-sm mt-2">Please download the file to view it.</p>
-            </div>
-          )}
+          {(() => {
+            const serverUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5001';
+            
+            if (previewFile.type.includes('image')) {
+              return (
+                <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-900 rounded-lg">
+                  <img src={`${serverUrl}${previewFile.url}`} alt={previewFile.name} className="max-w-full max-h-full object-contain rounded-md shadow-sm" />
+                </div>
+              );
+            }
+            
+            if (previewFile.type.includes('pdf')) {
+              return <iframe src={`${serverUrl}${previewFile.url}`} className="w-full h-full rounded-lg border-0 bg-white dark:bg-slate-900 shadow-sm" title={previewFile.name} />;
+            }
+            
+            if (previewFile.name.endsWith('.docx')) {
+              return <DocxViewer url={`${serverUrl}${previewFile.url}`} />;
+            }
+            
+            if (previewFile.name.endsWith('.pptx') || previewFile.name.endsWith('.ppt')) {
+              return <PptxViewer url={previewFile.url} name={previewFile.name} />;
+            }
+            
+            return (
+              <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                <FileText size={64} className="mb-4 opacity-50" />
+                <p className="text-lg font-medium">Preview not available for this file type</p>
+                <p className="text-sm mt-2">Please download the file to view it.</p>
+              </div>
+            );
+          })()}
         </div>
 
       </div>

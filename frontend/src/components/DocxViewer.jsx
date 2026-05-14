@@ -24,10 +24,12 @@ const DocxViewer = ({ url }) => {
   if (loading) return <div className="flex items-center justify-center h-full text-slate-500">Processing document...</div>;
 
   return (
-    <div 
-      className="bg-white p-8 min-h-full shadow-sm rounded-lg docx-viewer prose prose-slate max-w-none dark:prose-invert"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div className="h-full max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 pr-2">
+      <div 
+        className="bg-white p-8 min-h-full shadow-sm rounded-lg docx-viewer prose prose-slate max-w-none dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </div>
   );
 };
 
