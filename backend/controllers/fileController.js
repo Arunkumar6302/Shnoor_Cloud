@@ -96,16 +96,16 @@ const updateFile = async (req, res) => {
       for (const email of emails) {
         await sendShareEmail(email, file.name, file.url, req.user.name);
       }
-    } else if (isPublic === true && !wasPublic) {
+    } else if (isPublic !== undefined && isPublic === true && !wasPublic) {
       // Priority 2: Public Link Enabled
       req.io.emit('file_shared', file);
-    } else if (isTrashed === true && !wasTrashed) {
+    } else if (isTrashed !== undefined && isTrashed === true && !wasTrashed) {
       // Priority 3: Trashed
       req.io.emit('file_trashed', file);
-    } else if (isStarred !== wasStarred) {
+    } else if (isStarred !== undefined && isStarred !== wasStarred) {
       // Priority 4: Starred
       req.io.emit('file_starred', file);
-    } else if (name !== oldName) {
+    } else if (name !== undefined && name !== oldName) {
       // Priority 5: Renamed
       req.io.emit('file_renamed', file);
     } else {
