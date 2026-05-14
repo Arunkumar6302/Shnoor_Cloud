@@ -55,6 +55,11 @@ export default function Header({ onMenuClick }) {
         >
           <Menu size={20} />
         </button>
+        <div className="flex items-center gap-2 mr-2 lg:hidden">
+          <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-500 tracking-tight whitespace-nowrap">
+            Shnoor Cloud
+          </span>
+        </div>
         
         <div className="relative group flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-500 transition-colors" size={18} />
