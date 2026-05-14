@@ -171,7 +171,7 @@ export default function Dashboard() {
             {folders.map((folder) => (
               <div 
                 key={folder._id} 
-                onClick={() => navigate(`/files?folder=${folder._id}`)}
+                onClick={() => navigate(`/dashboard/files?folder=${folder._id}`)}
                 className="bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 p-3 md:p-4 rounded-xl flex items-center gap-3 md:gap-4 transition-all cursor-pointer group"
               >
                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white dark:bg-slate-700 flex items-center justify-center shadow-sm border border-slate-200 dark:border-slate-600 shrink-0">
