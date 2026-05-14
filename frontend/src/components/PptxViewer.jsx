@@ -4,8 +4,11 @@ const PptxViewer = ({ url, name }) => {
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   // Microsoft Office Online viewer URL
   const serverUrl = import.meta.env.PROD ? window.location.origin : 'http://localhost:5001';
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+  const fileUrl = `${serverUrl}${cleanUrl}`;
+  
   // Microsoft Office Online viewer URL
-  const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`${serverUrl}${url}`)}`;
+  const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
 
   if (isLocalhost) {
     return (
@@ -19,7 +22,7 @@ const PptxViewer = ({ url, name }) => {
             The online viewer cannot reach files on localhost. Download to open in Microsoft PowerPoint for the best experience.
           </p>
           <a 
-            href={`${serverUrl}${url}`}
+            href={fileUrl}
             download={name}
             className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-orange-500/20 active:scale-95"
           >
