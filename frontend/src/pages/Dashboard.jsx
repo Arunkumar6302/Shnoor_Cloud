@@ -33,8 +33,17 @@ export default function Dashboard() {
     setLoading(true);
     try {
       let params = {};
-      if (currentPath === '/starred') params.isStarred = true;
-      if (currentPath === '/trash') params.isTrashed = true;
+      
+      // Update path checks to account for /dashboard prefix
+      const isStarredPage = currentPath === '/dashboard/starred';
+      const isTrashPage = currentPath === '/dashboard/trash';
+      const isRecentPage = currentPath === '/dashboard/recent';
+      const isSharedPage = currentPath === '/dashboard/shared';
+      const isFilesPage = currentPath === '/dashboard/files' || currentPath === '/dashboard';
+      const isHomePage = currentPath === '/dashboard' && !folderId;
+
+      if (isStarredPage) params.isStarred = true;
+      if (isTrashPage) params.isTrashed = true;
       if (folderId) params.folder = folderId;
       
       const searchQuery = queryParams.get('q');
@@ -43,7 +52,7 @@ export default function Dashboard() {
       const { data: fileData } = await fileAPI.getFiles(params);
       setFiles(fileData);
 
-      if (currentPath === '/' || currentPath === '/files') {
+      if (isHomePage || isFilesPage) {
         const { data: folderData } = await folderAPI.getFolders({ parent: folderId || null });
         setFolders(folderData);
       }
@@ -132,10 +141,10 @@ export default function Dashboard() {
 
   const pageTitle = folderId 
     ? folders.find(f => f._id === folderId)?.name || "Folder"
-    : currentPath === '/recent' ? "Recent Files"
-    : currentPath === '/starred' ? "Starred Files"
-    : currentPath === '/trash' ? "Trash"
-    : currentPath === '/shared' ? "Shared with Me"
+    : currentPath === '/dashboard/recent' ? "Recent Files"
+    : currentPath === '/dashboard/starred' ? "Starred Files"
+    : currentPath === '/dashboard/trash' ? "Trash"
+    : currentPath === '/dashboard/shared' ? "Shared with Me"
     : "Your Files";
 
   return (
@@ -151,7 +160,7 @@ export default function Dashboard() {
         </button>
       )}
 
-      {(currentPath === '/' || currentPath === '/files') && folders.length > 0 && (
+      {(currentPath === '/dashboard' || currentPath === '/dashboard/files') && folders.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base md:text-lg font-semibold text-slate-800 dark:text-slate-200">
@@ -178,7 +187,7 @@ export default function Dashboard() {
         </section>
       )}
 
-      {currentPath === '/' && !folderId && files.length > 0 && (
+      {currentPath === '/dashboard' && !folderId && files.length > 0 && (
         <section>
           <h2 className="text-base md:text-lg font-semibold mb-4 text-slate-800 dark:text-slate-200">Suggested Files</h2>
           <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -225,7 +234,7 @@ export default function Dashboard() {
                 <FileText className="text-slate-300" size={32} />
               </div>
               <p className="text-sm md:text-base">
-                {currentPath === '/trash' ? "Trash is empty." : "No files found here."}
+                {currentPath === '/dashboard/trash' ? "Trash is empty." : "No files found here."}
               </p>
             </div>
           ) : (
@@ -262,7 +271,7 @@ export default function Dashboard() {
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1">
                           
-                          {currentPath === '/trash' ? (
+                          {currentPath === '/dashboard/trash' ? (
                             <>
                               <button onClick={() => handleAction(file._id, 'restore', { isTrashed: false })} className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors" title="Restore"><RotateCcw size={16} /></button>
                               <button onClick={() => handleAction(file._id, 'delete_permanently')} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition-colors" title="Delete Permanently"><Trash2 size={16} /></button>
