@@ -10,8 +10,6 @@ coverage/
 frontend/dist/
 dist/
 build/
-.vite/
-**/ .vite/
 
 # Environment Variables
 .env

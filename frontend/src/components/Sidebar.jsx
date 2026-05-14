@@ -11,12 +11,12 @@ function cn(...inputs) {
 }
 
 const navItems = [
-  { name: 'Home', icon: Home, path: '/' },
-  { name: 'My Files', icon: Folder, path: '/files' },
-  { name: 'Shared', icon: Users, path: '/shared' },
-  { name: 'Recent', icon: Clock, path: '/recent' },
-  { name: 'Starred', icon: Star, path: '/starred' },
-  { name: 'Trash', icon: Trash2, path: '/trash' },
+  { name: 'Home', icon: Home, path: '/dashboard' },
+  { name: 'My Files', icon: Folder, path: '/dashboard/files' },
+  { name: 'Shared', icon: Users, path: '/dashboard/shared' },
+  { name: 'Recent', icon: Clock, path: '/dashboard/recent' },
+  { name: 'Starred', icon: Star, path: '/dashboard/starred' },
+  { name: 'Trash', icon: Trash2, path: '/dashboard/trash' },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -137,7 +137,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <div className="h-full bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full transition-all" style={{ width: `${storagePercent}%` }}></div>
           </div>
         </div>
-        <Link to="/settings" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+        <Link to="/dashboard/settings" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
           <Settings size={18} className="text-slate-400" />
           Settings
         </Link>

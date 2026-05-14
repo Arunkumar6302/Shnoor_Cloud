@@ -12,10 +12,16 @@ const PrivateRoute = ({ children }) => {
 };
 
 function AppRoutes() {
+  const { user } = useAuth();
+  
   return (
     <Routes>
-      <Route path="/auth" element={<Auth />} />
-      <Route path="/" element={
+      {/* Root route: Shows Auth if not logged in, otherwise shows Dashboard */}
+      <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Auth />} />
+      <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth />} />
+      
+      {/* Protected Dashboard Routes */}
+      <Route path="/dashboard" element={
         <PrivateRoute>
           <Layout />
         </PrivateRoute>
@@ -28,6 +34,9 @@ function AppRoutes() {
         <Route path="trash" element={<Dashboard />} />
         <Route path="settings" element={<Settings />} />
       </Route>
+
+      {/* Catch-all: Redirect to root */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
