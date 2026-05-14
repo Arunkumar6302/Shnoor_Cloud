@@ -12,7 +12,9 @@ export default function NotificationManager() {
       Notification.requestPermission();
     }
 
-    const socketHost = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+    const socketHost = import.meta.env.PROD 
+      ? window.location.origin 
+      : (import.meta.env.VITE_API_URL || 'http://localhost:5001');
     console.log('Connecting to socket at:', socketHost);
     
     const socket = io(socketHost, {
