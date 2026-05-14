@@ -3,21 +3,12 @@ const nodemailer = require('nodemailer');
 const sendShareEmail = async (toEmail, fileName, fileUrl, ownerName, fileId) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_PORT === '465',
+      service: 'gmail',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
-      tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2'
-      },
-      requireTLS: true,
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      debug: true, // Enable debug logs to see the handshake
+      debug: true,
       logger: true
     });
 
