@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../frontend/dist');
   app.use(express.static(frontendPath));
   
-  app.get('(.*)', (req, res) => {
+  app.get('/:path*', (req, res) => {
     // If it's an API route, don't serve index.html
     if (req.originalUrl.startsWith('/api')) {
       return res.status(404).json({ message: 'API route not found' });
